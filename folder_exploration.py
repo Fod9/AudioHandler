@@ -36,13 +36,14 @@ def folder_exploration(path_to_folder, recursive=False, combine=True, parse=Fals
                 if file.endswith(tuple(accepted_extensions)):
                     subdirectories[root.split("/")[-1]]["files"].append(file)
     else:
-        subdirectories[path_to_folder] = {
-            "path": path_to_folder,
-            "files": []
-        }
+        subdirectories = {}
         for file in os.listdir(path_to_folder):
             if file.endswith(tuple(accepted_extensions)):
-                subdirectories[path_to_folder]["files"].append(file)
+                file_name = file.split(".")[0]
+                subdirectories[file_name] = {
+                    "path": path_to_folder,
+                    "files": [file]
+                }
     if combine:
         combine_audio(subdirectories)
     if parse:
