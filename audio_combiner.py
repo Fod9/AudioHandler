@@ -28,12 +28,15 @@ def combine_audio(subdirectories, save=True):
 
 def parse_audio(file, parse_time):  # parse_time in seconds
     # if parsed folder does not exist, create it
-    parsed_folder = os.path.join(file["path"], "parsed")
+    file_path = file['path'].split("/")[0:-1]
+    file_path.append("parsed")
+    parsed_folder = "/".join(file_path)
     os.makedirs(parsed_folder, exist_ok=True)
+    parse_time = int(parse_time)
     audio_file = AudioSegment.from_file(os.path.join(file["path"], file["file"]))
     for i in range(0, len(audio_file), parse_time * 1000):
         audio_file[i:i + parse_time * 1000].export(f"{parsed_folder}/{file['name']}_{i / 1000}.mp3", format="mp3")
-    print(f"File parsed to {parsed_folder} with {parse_time}s intervals")
+    print(f"File parsed to {parsed_folder} with {str(parse_time)}s intervals")
 
 
 print("All files parsed")
